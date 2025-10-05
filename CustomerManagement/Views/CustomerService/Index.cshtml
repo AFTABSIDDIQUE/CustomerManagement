@@ -1,0 +1,128 @@
+﻿@using CustomerManagement.DTO.CustomerService
+@model CustomerServicePageModel
+
+
+
+<h2>@(ViewBag.CustomerInfo.Name ?? "Customer") Service List</h2>
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
+    Add Service
+</button>
+
+
+<!--  Add Service Modal -->
+<div class="modal fade" id="addCustomerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="CreateCustomer" method="post">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addCustomerModalLabel">Add New Customer</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label asp-for="NewService.CustomerId" class="form-label">Customer Name</label>
+                        <!-- Hidden input for CustomerId -->
+                        <input asp-for="NewService.CustomerId"  type="hidden" value="@ViewBag.CustomerInfo.Id" />
+                        <input 
+                               class="form-control"
+                               value="@(ViewBag.CustomerInfo.Name ?? "")"
+                               readonly />
+                        <span asp-validation-for="NewService.CustomerId" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label asp-for="NewService.ServiceId" class="form-label">Service</label>
+                        <select asp-for="NewService.ServiceId" class="form-select" asp-items="ViewBag.ServiceList">
+                            <option value="">-- Select a service --</option>
+                        </select>
+                        <span asp-validation-for="NewService.ServiceId" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="NewService.CustomerPrice" class="form-label">Price</label>
+                        <input asp-for="NewService.CustomerPrice" class="form-control" placeholder="₹ Enter amount" />
+                        <span asp-validation-for="NewService.CustomerPrice" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--  Add Service Table -->
+<table class="table mt-4" id="example">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Service</th>
+            <th>Customer Price</th>
+            <th>Minimum Price</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="mydata">
+        @if (Model != null && Model.Services.Any())
+        {
+            foreach (var cus in Model.Services)
+            {
+                <tr>
+                    <td>@cus.CustomerServicesId</td>
+                    <td>@cus.CustomerName</td>
+                    <td>@cus.ServiceName</td>
+                    <td>@cus.CustomerPrice</td>
+                    <td>@cus.MinimumPriceList</td>
+                    <td>
+                        <a >         
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
+                                Update Service
+                            </button>
+                        </a> 
+                        @* <a asp-controller="CustomerService"
+                           asp-action="Index"
+                           asp-route-id="@cus.CustomerServicesId"
+                           class="btn btn-primary btn-sm">
+                            Update
+                        </a> *@
+                    </td>
+                </tr>
+            }
+        }
+        @* else
+        {
+            <tr>
+                <td colspan="5">No records found.</td>
+            </tr>
+        } *@
+
+    </tbody>
+</table>
+
+@section Scripts
+{
+    <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet" />
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#example').DataTable({
+                            language: {
+                emptyTable: "No services found for this customer."
+            }
+            });
+
+        });
+    </script>
+
+    <partial name="_ValidationScriptsPartial" />
+}
