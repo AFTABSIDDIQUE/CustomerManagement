@@ -30,6 +30,7 @@ namespace CustomerManagement.Controllers
 
             if (data!=null)
             {
+                data.CreatedAt = DateTime.Now;
                 customerService.AddCustomer(data);
                 TempData["Success"] = "Customer Added successfully!";
                 return RedirectToAction("Index");

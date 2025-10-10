@@ -8,7 +8,7 @@ namespace CustomerManagement.DTO.CustomerService
         public string CustomerName { get; set; }
         public string ServiceName { get; set; }
         public decimal CustomerPrice { get; set; }
-        public decimal MinimumPriceList { get; set; }
+        public string MinimumPriceList { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }

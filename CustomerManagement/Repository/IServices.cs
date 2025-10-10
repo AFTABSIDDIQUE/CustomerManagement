@@ -7,5 +7,7 @@ namespace CustomerManagement.Repository
     {
         IEnumerable<Service> FetchServices();
         void AddService(AddServiceDTO data);
+        UpdateServiceDTO GetCustomerServices(int id);
+        void UpdateService(UpdateServiceDTO data);
     }
 }

@@ -48,5 +48,23 @@ namespace CustomerManagement.Services
         .Contains(s.ServiceId))
     .ToList();
         }
+
+        public UpdateCustomerServiceDTO GetCustomerServices(int id)
+        {
+            var data = db.CustomerService.Include(c=>c.Customers).Include(s=>s.Services).FirstOrDefault(x => x.CustomerServicesId == id);
+            var details = mapper.Map<UpdateCustomerServiceDTO>(data);
+            return details;
+        }
+
+        public void UpdateCustomerService(UpdateCustomerServiceDTO data)
+        {
+            var existingData = db.CustomerService.FirstOrDefault(x => x.CustomerServicesId == data.CustomerServicesId);
+            if (existingData != null)
+            {
+                existingData.CustomerPrice = data.CustomerPrice;
+                existingData.UpdatedAt = DateTime.Now;
+                db.SaveChanges();
+            }
+        }
     }
 }

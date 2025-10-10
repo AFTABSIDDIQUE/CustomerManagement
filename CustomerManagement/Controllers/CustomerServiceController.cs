@@ -48,6 +48,7 @@ namespace CustomerManagement.Controllers
             var data = model.NewService;
             if (data != null) 
             {
+                data.CreatedAt = DateTime.Now;
                 customerService.AddCustomerService(data);
                 TempData["Success"] = "Customer Services Added successfully!";
                 return RedirectToAction("Index", new { id = data.CustomerId });
@@ -55,6 +56,26 @@ namespace CustomerManagement.Controllers
             return View("Index", data);
         }
 
+        [HttpGet]
+        public IActionResult GetCustomerService(int id)
+        {
+            var data = customerService.GetCustomerServices(id);
+
+            return Json(data);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateCustomer(CustomerServicePageModel model)
+        {
+            var data = model.UpdateService;
+            if (data != null)
+            {
+                customerService.UpdateCustomerService(data);
+                TempData["Success"] = "Customer Services Updated successfully!";
+                return RedirectToAction("Index", new { id = data.CustomerId });
+            }
+            return View(data);
+        }
 
 
     }

@@ -39,5 +39,26 @@ namespace CustomerManagement.Controllers
             return View("Index",data);
         }
 
+        [HttpGet]
+        public IActionResult GetCustomerService(int id)
+        {
+            var data = services.GetCustomerServices(id);
+            return Json(data);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateService(ServicePageViewModel model)
+        {
+            var data = model.UpdateService;
+            if (data != null)
+            {
+                data.Updated = DateTime.Now;
+                services.UpdateService(data);
+                TempData["Success"] = "Service Updated successfully!";
+                return RedirectToAction("Index");
+            }
+            TempData["Error"] = "Failed to update service.";
+            return View("Index", data);
+        }
     }
 }

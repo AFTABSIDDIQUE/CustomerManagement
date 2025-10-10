@@ -5,5 +5,6 @@
         public int CustomerId { get; set; }
         public int ServiceId { get; set; }
         public decimal CustomerPrice { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

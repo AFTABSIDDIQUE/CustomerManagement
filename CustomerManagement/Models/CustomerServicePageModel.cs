@@ -6,5 +6,6 @@ namespace CustomerManagement.Models
     {
         public IEnumerable<FetchCustomerServiceDTO> Services { get; set; }
         public AddCustomerServiceDTO NewService { get; set; } 
+        public UpdateCustomerServiceDTO UpdateService { get; set; }
     }
 }

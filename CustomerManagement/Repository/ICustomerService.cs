@@ -10,5 +10,7 @@ namespace CustomerManagement.Repository
         List<FetchCustomerServiceDTO> FetchServiceList(int id);
         public void AddCustomerService(AddCustomerServiceDTO data);
         List<Service> FetchServiceListViewBag(int id);
+        UpdateCustomerServiceDTO GetCustomerServices(int id);
+        public void UpdateCustomerService(UpdateCustomerServiceDTO data);
     }
 }

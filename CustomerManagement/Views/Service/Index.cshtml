@@ -40,6 +40,36 @@
     </div>
 </div>
 
+<!-- ✅ Update Service Modal -->
+<div class="modal fade" id="updateCustomerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form  method="post" asp-action="UpdateService">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addCustomerModalLabel">Update Services</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input type="hidden" asp-for="UpdateService.ServiceId" id="ServiceId" name="UpdateService.ServiceId" />
+
+                        <label asp-for="UpdateService.ServiceName" class="form-label">Service Name</label>
+                        <input asp-for="UpdateService.ServiceName" id="ServiceName"  class="form-control" placeholder="Enter customer name" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="UpdateService.MinimumPriceList" class="form-label">Minimum Price</label>
+                        <input asp-for="UpdateService.MinimumPriceList" id="MinimumPriceList" class="form-control" placeholder="₹ Enter Amount" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <!-- ✅ Customer Table -->
 <table class="table mt-4" id="example">
@@ -52,18 +82,21 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var cus in Model.FetchServices)
+        @if (Model != null && Model.FetchServices.Any())
         {
-            <tr>
-                <td>@cus.ServiceId</td>
-                <td>@cus.ServiceName</td>
-                <td>@cus.MinimumPriceList</td>
-                <td>
-                    <a asp-controller="" asp-action="" asp-route-id="@cus.ServiceId" class="btn btn-warning btn-sm">
-                        Update
-                    </a>
-                </td>
-            </tr>
+                @foreach (var cus in Model.FetchServices)
+                {
+                    <tr>
+                        <td>@cus.ServiceId</td>
+                        <td>@cus.ServiceName</td>
+                        <td>@cus.MinimumPriceList</td>
+                        <td>
+                            <a asp-controller="" asp-action="" asp-route-id="@cus.ServiceId" class="btn btn-warning btn-sm updateServiceBtn" data-bs-toggle="modal" data-id="@cus.ServiceId" data-bs-target="#updateCustomerModal">
+                                Update
+                            </a>
+                        </td>
+                    </tr>
+                }
         }
     </tbody>
 </table>
@@ -83,6 +116,27 @@
 
             // Move the default DataTables search box into the custom container
             // $('#example_filter').appendTo('#dataTables_filter_container');
+
+             // Handle Update Button Click (delegated binding for dynamic rows)
+            $('#example').on('click', '.updateServiceBtn', function () {
+                var id = $(this).data('id'); // Get the customer service ID
+
+                $.ajax({
+                    url: '/Service/GetCustomerService/' + id, // Backend endpoint
+                    type: 'GET',
+
+
+                   success: function (data) {
+                        $('#ServiceId').val(data.serviceId);
+                        $('#ServiceName').val(data.serviceName);       // make sure this comes from backend!
+                        $('#MinimumPriceList').val(data.minimumPriceList);
+
+                    },
+                    error: function () {
+                        alert('Error loading service data.');
+                    }
+                });
+            });
         });
     </script>
 

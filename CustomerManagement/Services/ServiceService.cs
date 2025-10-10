@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace CustomerManagement.Services
 {
-    public class ServiceService:IServices
+    public class ServiceService : IServices
     {
         private readonly ApplicationDbContext db;
         private readonly IMapper mapper;
@@ -29,6 +29,29 @@ namespace CustomerManagement.Services
         public IEnumerable<Service> FetchServices()
         {
             return db.Service.ToList();
+        }
+
+        public UpdateServiceDTO GetCustomerServices(int id)
+        {
+            var details = db.Service.Find(id);
+            var data = mapper.Map<UpdateServiceDTO>(details);
+            return data;   
+        }
+
+        public void UpdateService(UpdateServiceDTO data)
+        {
+            var existingService = db.Service.Find(data.ServiceId);
+            if (existingService != null)
+            {
+                // Update the fields based on the DTO
+                existingService.ServiceName = data.ServiceName;
+                existingService.MinimumPriceList = data.MinimumPriceList;
+                existingService.UpdatedAt = DateTime.Now; // Optional: for audit tracking
+
+                // Save changes to the database
+                db.SaveChanges();
+            }
+
         }
     }
 }

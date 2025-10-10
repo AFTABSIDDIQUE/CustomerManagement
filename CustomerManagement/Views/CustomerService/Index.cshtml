@@ -57,6 +57,53 @@
     </div>
 </div>
 
+<!-- Update Service Modal -->
+<div class="modal fade" id="UpdateCustomerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="updateServiceForm" method="post" asp-action="UpdateCustomer">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addCustomerModalLabel">Update Customer</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <!-- CustomerId (Hidden) -->
+                    <input type="hidden" asp-for="UpdateService.CustomerId" id="CustomerId" name="UpdateService.CustomerId" />
+
+                    <!-- Customer Name -->
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="UpdateService.CustomerName">Customer Name</label>
+                        <input type="text" id="CustomerName" asp-for="UpdateService.CustomerName" class="form-control" readonly />
+                    </div>
+
+                    <input type="hidden" asp-for="UpdateService.ServiceId" id="ServiceId" name="UpdateService.ServiceId" />
+                    <!-- Customer Name -->
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="UpdateService.ServiceName">Service Name</label>
+                        <input type="text" id="ServiceName" asp-for="UpdateService.ServiceName" class="form-control" readonly />
+                    </div>
+
+                    <!-- Customer Price -->
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="UpdateService.CustomerPrice">Price</label>
+                        <input type="text" asp-for="UpdateService.CustomerPrice" id="CustomerPrice" name="UpdateService.CustomerPrice" class="form-control" placeholder="₹ Enter amount" />
+                    </div>
+
+                    <!-- Hidden field for CustomerServicesId (primary key for update) -->
+                    <input type="hidden" id="CustomerServicesId" asp-for="UpdateService.CustomerServicesId" name="UpdateService.CustomerServicesId" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 <!--  Add Service Table -->
 <table class="table mt-4" id="example">
     <thead>
@@ -81,17 +128,15 @@
                     <td>@cus.CustomerPrice</td>
                     <td>@cus.MinimumPriceList</td>
                     <td>
-                        <a >         
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
+                        <a >
+                            <button type="button"
+                                    class="btn btn-warning updateServiceBtn"
+                                    data-id="@cus.CustomerServicesId"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#UpdateCustomerModal">
                                 Update Service
                             </button>
                         </a> 
-                        @* <a asp-controller="CustomerService"
-                           asp-action="Index"
-                           asp-route-id="@cus.CustomerServicesId"
-                           class="btn btn-primary btn-sm">
-                            Update
-                        </a> *@
                     </td>
                 </tr>
             }
@@ -115,14 +160,39 @@
 
     <script>
         $(document).ready(function () {
+            // Initialize DataTables
             var table = $('#example').DataTable({
-                            language: {
-                emptyTable: "No services found for this customer."
-            }
+                language: {
+                    emptyTable: "No services found for this customer."
+                }
             });
 
+            // Handle Update Button Click (delegated binding for dynamic rows)
+            $('#example').on('click', '.updateServiceBtn', function () {
+                var id = $(this).data('id'); // Get the customer service ID
+
+                $.ajax({
+                    url: '/CustomerService/GetCustomerService/' + id, // Backend endpoint
+                    type: 'GET',
+
+
+                   success: function (data) {
+                        $('#CustomerServicesId').val(data.customerServicesId);
+                        $('#CustomerId').val(data.customerId);
+                        $('#ServiceId').val(data.serviceId);
+                        $('#CustomerName').val(data.customerName);
+                        $('#ServiceName').val(data.serviceName);       // make sure this comes from backend!
+                        $('#CustomerPrice').val(data.customerPrice);
+                    
+                    },
+                    error: function () {
+                        alert('Error loading service data.');
+                    }
+                });
+            });
         });
     </script>
+
 
     <partial name="_ValidationScriptsPartial" />
 }
