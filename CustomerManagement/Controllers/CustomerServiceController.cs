@@ -24,7 +24,13 @@ namespace CustomerManagement.Controllers
             ViewBag.CustomerInfo = new
             {
                 Id = name.CustomerId,
-                Name = name.CustomerName
+                Name = name.CustomerName,
+                Phone = name.MobileNumber,
+                WhatsApp = name.WhatsAppNumber,
+                Email = name.Email,
+                Reference = name.Reference
+
+
             };
 
 
@@ -65,16 +71,30 @@ namespace CustomerManagement.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateCustomer(CustomerServicePageModel model)
+        public IActionResult UpdateService(CustomerServicePageModel model)
         {
             var data = model.UpdateService;
             if (data != null)
             {
                 customerService.UpdateCustomerService(data);
                 TempData["Success"] = "Customer Services Updated successfully!";
-                return RedirectToAction("Index", new { id = data.CustomerId });
+                
             }
-            return View(data);
+            return RedirectToAction("Index", new { id = data.CustomerId });
+        }
+
+        [HttpPost]
+        public IActionResult UpdateCustomerInfo(CustomerServicePageModel model)
+        {
+            var data = model.UpdateCustomer;
+            if (data != null)
+            {
+                data.UpdatedAt = DateTime.Now;
+                customerService.UpdateCustomerDetails(data);
+                TempData["Success"] = "Customer Info Updated successfully!";
+                
+            }
+            return RedirectToAction("Index", new { id = data.CustomerId });
         }
 
 

@@ -11,50 +11,66 @@
 </div>
 
 
-<!-- ✅ Add Customer Modal -->
+<!-- ✅ Add Customer Modal (Two-column layout) -->
 <div class="modal fade" id="addCustomerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Increased width for two columns -->
         <div class="modal-content">
             <form asp-action="CreateCustomer" method="post">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="addCustomerModalLabel">Add New Customer</h1>
+                    <h5 class="modal-title" id="addCustomerModalLabel">Add New Customer</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label asp-for="NewCustomer.CustomerName" class="form-label"></label>
-                        <input asp-for="NewCustomer.CustomerName" class="form-control" placeholder="Enter customer name" />
-                        <span asp-validation-for="NewCustomer.CustomerName" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="NewCustomer.MobileNumber" class="form-label"></label>
-                        <input asp-for="NewCustomer.MobileNumber" class="form-control" placeholder="9988774455" />
-                        <span asp-validation-for="NewCustomer.MobileNumber" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="NewCustomer.WhatsAppNumber" class="form-label"></label>
-                        <input asp-for="NewCustomer.WhatsAppNumber" class="form-control" placeholder="9988774455" />
-                        <span asp-validation-for="NewCustomer.WhatsAppNumber" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="NewCustomer.Reference" class="form-label"></label>
-                        <input asp-for="NewCustomer.Reference" class="form-control" placeholder="Place/Short Name" />
-                        <span asp-validation-for="NewCustomer.Reference" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="NewCustomer.Email" class="form-label"></label>
-                        <input asp-for="NewCustomer.Email" class="form-control" placeholder="example@gmail.com" />
-                        <span asp-validation-for="NewCustomer.Email" class="text-danger"></span>
+                    <div class="row">
+                        <!-- Left Column -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="NewCustomer.CustomerName" class="form-label fw-bold">Customer Name</label>
+                                <input asp-for="NewCustomer.CustomerName" class="form-control" placeholder="Enter customer name" />
+                                <span asp-validation-for="NewCustomer.CustomerName" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="NewCustomer.WhatsAppNumber" class="form-label fw-bold">WhatsApp Number</label>
+                                <input asp-for="NewCustomer.WhatsAppNumber" class="form-control" placeholder="9988774455" />
+                                <span asp-validation-for="NewCustomer.WhatsAppNumber" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="NewCustomer.Email" class="form-label fw-bold">Email</label>
+                                <input asp-for="NewCustomer.Email" class="form-control" placeholder="example@gmail.com" />
+                                <span asp-validation-for="NewCustomer.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="NewCustomer.MobileNumber" class="form-label fw-bold">Mobile Number</label>
+                                <input asp-for="NewCustomer.MobileNumber" class="form-control" placeholder="9988774455" />
+                                <span asp-validation-for="NewCustomer.MobileNumber" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="NewCustomer.Reference" class="form-label fw-bold">Reference</label>
+                                <input asp-for="NewCustomer.Reference" class="form-control" placeholder="Place/Short Name" />
+                                <span asp-validation-for="NewCustomer.Reference" class="text-danger"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-success">Save</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
 
 <!-- ✅ Customer Table -->
 <table class="table mt-4" id="example">
@@ -74,7 +90,7 @@
                 <td>@cus.CustomerName</td>
                 <td>@cus.MobileNumber</td>
                 <td>
-                    <a asp-controller="CustomerService" asp-action="Index" asp-route-id="@cus.CustomerId" class="btn btn-primary btn-sm">
+                    <a asp-controller="CustomerService" asp-action="Index" asp-route-id="@cus.CustomerId" class="btn btn-danger btn-sm">
                         View
                     </a>
                 </td>

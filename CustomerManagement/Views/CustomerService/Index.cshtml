@@ -1,15 +1,55 @@
 ﻿@using CustomerManagement.DTO.CustomerService
 @model CustomerServicePageModel
 
-
-
 <h2>@(ViewBag.CustomerInfo.Name ?? "Customer") Service List</h2>
 
+<!-- Container Div with border -->
+<div style="border: 2px solid #007bff; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+    <div class="row">
+        <!-- Left Column -->
+        <div class="col-md-6">
+            <div class="mb-3 d-flex">
+                <strong class="me-2">Customer Name:</strong>
+                <span>@(ViewBag.CustomerInfo.Name ?? "N/A")</span>
+            </div>
+            <div class="mb-3 d-flex">
+                <strong class="me-2">Mobile Number:</strong>
+                <span>@(ViewBag.CustomerInfo.Phone ?? "N/A")</span>
+            </div>
+            <div class="mb-3 d-flex">
+                <strong class="me-2">Email:</strong>
+                <span>@(ViewBag.CustomerInfo.Email ?? "N/A")</span>
+            </div>
+        </div>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
-    Add Service
-</button>
+        <!-- Right Column -->
+        <div class="col-md-6">
+            <div class="mb-3 d-flex">
+                <strong class="me-2">Customer ID:</strong>
+                <span>@(ViewBag.CustomerInfo.Id ?? "N/A")</span>
+            </div>
+            <div class="mb-3 d-flex">
+                <strong class="me-2">WhatsApp Number:</strong>
+                <span>@(ViewBag.CustomerInfo.WhatsApp ?? "N/A")</span>
+            </div>
+            <div class="mb-3 d-flex">
+                <strong class="me-2">Reference:</strong>
+                <span>@(ViewBag.CustomerInfo.Reference ?? "N/A")</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-3">
+        <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#UpdateCustomerModal">
+            Update Customer Details
+        </button>
+
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
+            Add Service
+        </button>
+    </div>
+</div>
 
 
 <!--  Add Service Modal -->
@@ -25,14 +65,12 @@
                     <div class="mb-3">
                         <label asp-for="NewService.CustomerId" class="form-label">Customer Name</label>
                         <!-- Hidden input for CustomerId -->
-                        <input asp-for="NewService.CustomerId"  type="hidden" value="@ViewBag.CustomerInfo.Id" />
-                        <input 
-                               class="form-control"
+                        <input asp-for="NewService.CustomerId" type="hidden" value="@ViewBag.CustomerInfo.Id" />
+                        <input class="form-control"
                                value="@(ViewBag.CustomerInfo.Name ?? "")"
                                readonly />
                         <span asp-validation-for="NewService.CustomerId" class="text-danger"></span>
                     </div>
-
 
                     <div class="mb-3">
                         <label asp-for="NewService.ServiceId" class="form-label">Service</label>
@@ -58,10 +96,10 @@
 </div>
 
 <!-- Update Service Modal -->
-<div class="modal fade" id="UpdateCustomerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+<div class="modal fade" id="UpdateServiceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="updateServiceForm" method="post" asp-action="UpdateCustomer">
+            <form id="updateServiceForm" method="post" asp-action="UpdateService">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="addCustomerModalLabel">Update Customer</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -78,7 +116,7 @@
                     </div>
 
                     <input type="hidden" asp-for="UpdateService.ServiceId" id="ServiceId" name="UpdateService.ServiceId" />
-                    <!-- Customer Name -->
+                    <!-- Service Name -->
                     <div class="mb-3">
                         <label class="form-label" asp-for="UpdateService.ServiceName">Service Name</label>
                         <input type="text" id="ServiceName" asp-for="UpdateService.ServiceName" class="form-control" readonly />
@@ -103,6 +141,63 @@
     </div>
 </div>
 
+<!-- Update Customer Modal -->
+<div class="modal fade" id="UpdateCustomerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="updateCustomerForm" method="post" asp-action="UpdateCustomerInfo">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateCustomerModalLabel">Update Customer Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Left Column -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="UpdateCustomer.CustomerName" class="form-label fw-bold">Customer Name</label>
+                                <input asp-for="UpdateCustomer.CustomerName"  type="text" class="form-control" id="CustomerName" value="@ViewBag.CustomerInfo?.Name" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="UpdateCustomer.MobileNumber"  class="form-label fw-bold">Mobile Number</label>
+                                <input asp-for="UpdateCustomer.MobileNumber"  type="text" class="form-control" id="CustomerPhone" value="@ViewBag.CustomerInfo?.Phone" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="UpdateCustomer.Email"  class="form-label fw-bold">Email</label>
+                                <input asp-for="UpdateCustomer.Email"  type="email" class="form-control" id="CustomerEmail" value="@ViewBag.CustomerInfo?.Email" />
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="UpdateCustomer.WhatsAppNumber"  class="form-label fw-bold">WhatsApp Number</label>
+                                <input asp-for="UpdateCustomer.WhatsAppNumber"  type="text" class="form-control" id="CustomerWhatsApp" value="@ViewBag.CustomerInfo?.WhatsApp" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="UpdateCustomer.Reference"  class="form-label fw-bold">Reference</label>
+                                <input asp-for="UpdateCustomer.Reference" type="text" class="form-control" id="CustomerReference" value="@ViewBag.CustomerInfo?.Reference" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hidden Customer ID -->
+                    <input asp-for="UpdateCustomer.CustomerId"  type="hidden" id="CustomerId" value="@ViewBag.CustomerInfo?.Id" />
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <!--  Add Service Table -->
 <table class="table mt-4" id="example">
@@ -113,6 +208,7 @@
             <th>Service</th>
             <th>Customer Price</th>
             <th>Minimum Price</th>
+            <th>Updated Date</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -127,16 +223,17 @@
                     <td>@cus.ServiceName</td>
                     <td>@cus.CustomerPrice</td>
                     <td>@cus.MinimumPriceList</td>
+                    <td>@cus.UpdatedAt</td>
                     <td>
-                        <a >
+                        <a>
                             <button type="button"
                                     class="btn btn-warning updateServiceBtn"
                                     data-id="@cus.CustomerServicesId"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#UpdateCustomerModal">
+                                    data-bs-target="#UpdateServiceModal">
                                 Update Service
                             </button>
-                        </a> 
+                        </a>
                     </td>
                 </tr>
             }
@@ -175,15 +272,13 @@
                     url: '/CustomerService/GetCustomerService/' + id, // Backend endpoint
                     type: 'GET',
 
-
-                   success: function (data) {
+                    success: function (data) {
                         $('#CustomerServicesId').val(data.customerServicesId);
                         $('#CustomerId').val(data.customerId);
                         $('#ServiceId').val(data.serviceId);
                         $('#CustomerName').val(data.customerName);
-                        $('#ServiceName').val(data.serviceName);       // make sure this comes from backend!
+                        $('#ServiceName').val(data.serviceName); // make sure this comes from backend!
                         $('#CustomerPrice').val(data.customerPrice);
-                    
                     },
                     error: function () {
                         alert('Error loading service data.');
@@ -192,7 +287,6 @@
             });
         });
     </script>
-
 
     <partial name="_ValidationScriptsPartial" />
 }

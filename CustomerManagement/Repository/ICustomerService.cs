@@ -1,4 +1,5 @@
-﻿using CustomerManagement.DTO.CustomerService;
+﻿using CustomerManagement.DTO.Customer;
+using CustomerManagement.DTO.CustomerService;
 using CustomerManagement.Models;
 
 namespace CustomerManagement.Repository
@@ -12,5 +13,6 @@ namespace CustomerManagement.Repository
         List<Service> FetchServiceListViewBag(int id);
         UpdateCustomerServiceDTO GetCustomerServices(int id);
         public void UpdateCustomerService(UpdateCustomerServiceDTO data);
+        public void UpdateCustomerDetails(UpdateCustomerDTO data);
     }
 }

@@ -1,4 +1,5 @@
-﻿using CustomerManagement.DTO.CustomerService;
+﻿using CustomerManagement.DTO.Customer;
+using CustomerManagement.DTO.CustomerService;
 
 namespace CustomerManagement.Models
 {
@@ -7,5 +8,6 @@ namespace CustomerManagement.Models
         public IEnumerable<FetchCustomerServiceDTO> Services { get; set; }
         public AddCustomerServiceDTO NewService { get; set; } 
         public UpdateCustomerServiceDTO UpdateService { get; set; }
+        public UpdateCustomerDTO UpdateCustomer { get; set; }
     }
 }

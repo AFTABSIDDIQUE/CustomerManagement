@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CustomerManagement.Data;
+using CustomerManagement.DTO.Customer;
 using CustomerManagement.DTO.CustomerService;
 using CustomerManagement.Models;
 using CustomerManagement.Repository;
@@ -55,6 +56,21 @@ namespace CustomerManagement.Services
             var details = mapper.Map<UpdateCustomerServiceDTO>(data);
             return details;
         }
+
+        public void UpdateCustomerDetails(UpdateCustomerDTO data)
+        {
+            var existingData = db.Customer.FirstOrDefault(x => x.CustomerId == data.CustomerId);
+            if (existingData != null)
+            {
+                existingData.CustomerName = data.CustomerName;
+                existingData.MobileNumber = data.MobileNumber;
+                existingData.WhatsAppNumber = data.WhatsAppNumber;
+                existingData.Reference = data.Reference;
+                existingData.Email = data.Email;
+                existingData.UpdatedAt = DateTime.Now;
+                db.SaveChanges();
+            }
+         }
 
         public void UpdateCustomerService(UpdateCustomerServiceDTO data)
         {

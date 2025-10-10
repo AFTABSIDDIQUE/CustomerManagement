@@ -11,6 +11,7 @@ namespace CustomerManagement.Mapper
         public MapperData() 
         {
             CreateMap<CustomersServices,AddCustomerDTO>().ReverseMap();
+            CreateMap<CustomersServices, UpdateCustomerDTO>().ReverseMap();
 
             CreateMap<Service, AddServiceDTO>().ReverseMap();
             CreateMap<Service, FetchServiceDTO>().ReverseMap();
