@@ -8,8 +8,8 @@ namespace CustomerManagement.Controllers
 {
     public class CustomerServiceController : Controller
     {
-        private ICustomerService customerService;
-        public CustomerServiceController(ICustomerService customerService)
+        private ICustomerHandler customerService;
+        public CustomerServiceController(ICustomerHandler customerService)
         {
             this.customerService = customerService;
         }
@@ -40,6 +40,15 @@ namespace CustomerManagement.Controllers
                 Value = s.ServiceId.ToString(),
                 Text = s.ServiceName
             }).ToList();
+
+            // Replace null UpdatedAt with CreatedAt
+            foreach (var dates in data)
+            {
+                if (dates.UpdatedAt == null)
+                {
+                    dates.UpdatedAt = dates.CreatedAt;
+                }
+            }
 
             var model = new CustomerServicePageModel
             {

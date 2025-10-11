@@ -1,45 +1,58 @@
 ﻿@model CustomerManagement.Models.CustomerPageViewModel
+@{
+    Layout = "_Layout";
+}
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <div class="d-flex align-items-center">
-        <span class="me-3 fw-semibold">Customer Details:</span>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
+        <span class="mr-3 font-weight-semibold">Customer Details:</span>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCustomerModal">
             Add Customer
         </button>
+
     </div>
     <div id="dataTables_filter_container"></div> <!-- Search box will be moved here -->
 </div>
 
 
 <!-- ✅ Add Customer Modal (Two-column layout) -->
-<div class="modal fade" id="addCustomerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <!-- Increased width for two columns -->
+<div class="modal fade" id="addCustomerModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form asp-action="CreateCustomer" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addCustomerModalLabel">Add New Customer</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
 
                 <div class="modal-body">
                     <div class="row">
                         <!-- Left Column -->
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label asp-for="NewCustomer.CustomerName" class="form-label fw-bold">Customer Name</label>
+                            <div class="form-group">
+                                <label asp-for="NewCustomer.CustomerName" class="font-weight-bold">Customer Name</label>
                                 <input asp-for="NewCustomer.CustomerName" class="form-control" placeholder="Enter customer name" />
                                 <span asp-validation-for="NewCustomer.CustomerName" class="text-danger"></span>
                             </div>
 
-                            <div class="mb-3">
-                                <label asp-for="NewCustomer.WhatsAppNumber" class="form-label fw-bold">WhatsApp Number</label>
-                                <input asp-for="NewCustomer.WhatsAppNumber" class="form-control" placeholder="9988774455" />
+                            <div class="form-group">
+                                <!-- Checkbox to copy Mobile Number -->
+                                <div class="form-check mb-2">
+                                    <input type="checkbox" class="form-check-input" id="copyMobileToWhatsapp" />
+                                    <label class="form-check-label" for="copyMobileToWhatsapp">
+                                        Use Mobile Number as WhatsApp
+                                    </label>
+                                </div>
+
+                                <label asp-for="NewCustomer.WhatsAppNumber" class="font-weight-bold">WhatsApp Number</label>
+                                <input asp-for="NewCustomer.WhatsAppNumber" maxlength="10" pattern="\d{10}"  class="form-control" id="WhatsAppNumber" placeholder="9988774455" />
                                 <span asp-validation-for="NewCustomer.WhatsAppNumber" class="text-danger"></span>
                             </div>
 
-                            <div class="mb-3">
-                                <label asp-for="NewCustomer.Email" class="form-label fw-bold">Email</label>
+                            <div class="form-group">
+                                <label asp-for="NewCustomer.Email" class="font-weight-bold">Email</label>
                                 <input asp-for="NewCustomer.Email" class="form-control" placeholder="example@gmail.com" />
                                 <span asp-validation-for="NewCustomer.Email" class="text-danger"></span>
                             </div>
@@ -47,14 +60,14 @@
 
                         <!-- Right Column -->
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label asp-for="NewCustomer.MobileNumber" class="form-label fw-bold">Mobile Number</label>
-                                <input asp-for="NewCustomer.MobileNumber" class="form-control" placeholder="9988774455" />
+                            <div class="form-group">
+                                <label asp-for="NewCustomer.MobileNumber" class="font-weight-bold">Mobile Number</label>
+                                <input asp-for="NewCustomer.MobileNumber" maxlength="10" pattern="\d{10}"  class="form-control" id="MobileNumber" placeholder="9988774455" />
                                 <span asp-validation-for="NewCustomer.MobileNumber" class="text-danger"></span>
                             </div>
 
-                            <div class="mb-3">
-                                <label asp-for="NewCustomer.Reference" class="form-label fw-bold">Reference</label>
+                            <div class="form-group">
+                                <label asp-for="NewCustomer.Reference" class="font-weight-bold">Reference</label>
                                 <input asp-for="NewCustomer.Reference" class="form-control" placeholder="Place/Short Name" />
                                 <span asp-validation-for="NewCustomer.Reference" class="text-danger"></span>
                             </div>
@@ -63,7 +76,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success">Save</button>
                 </div>
             </form>
@@ -73,48 +86,72 @@
 
 
 <!-- ✅ Customer Table -->
-<table class="table mt-4" id="example">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Mobile Number</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var cus in Model.Customers)
-        {
+<div class="table-responsive mt-4">
+    <table class="table table-bordered" id="servicesTable" width="100%" cellspacing="0">
+        <thead class="table-light">
             <tr>
-                <td>@cus.CustomerId</td>
-                <td>@cus.CustomerName</td>
-                <td>@cus.MobileNumber</td>
-                <td>
-                    <a asp-controller="CustomerService" asp-action="Index" asp-route-id="@cus.CustomerId" class="btn btn-danger btn-sm">
-                        View
-                    </a>
-                </td>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Mobile Number</th>
+                <th>Action</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tfoot class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Mobile Number</th>
+                <th>Action</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            @foreach (var cus in Model.Customers)
+            {
+                <tr>
+                    <td>@cus.CustomerId</td>
+                    <td>@cus.CustomerName</td>
+                    <td>@cus.MobileNumber</td>
+                    <td>
+                        <a asp-controller="CustomerService" asp-action="Index" asp-route-id="@cus.CustomerId" class="btn btn-danger btn-sm">
+                            View
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
 
 @section Scripts
 {
-    <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet" />
+    @* <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet" />
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script> *@
 
     <script>
         $(document).ready(function () {
-            var table = $('#example').DataTable({
+            var table = $('#servicesTable').DataTable({
                 // dom: '<"top"f>rt<"bottom"lip><"clear">' Search bar top-left, rest default
             });
 
-            // Move the default DataTables search box into the custom container
-            // $('#example_filter').appendTo('#dataTables_filter_container');
+            // Checkbox change event
+            $('#copyMobileToWhatsapp').change(function() {
+                if ($(this).is(':checked')) {
+                    // Copy Mobile Number to WhatsApp
+                    var mobile = $('#MobileNumber').val();
+                    $('#WhatsAppNumber').val(mobile);
+                } else {
+                    // Clear WhatsApp field if unchecked
+                    $('#WhatsAppNumber').val('');
+                }
+            });
         });
+    </script>
+
+
+       
     </script>
 
     <partial name="_ValidationScriptsPartial" />

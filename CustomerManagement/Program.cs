@@ -18,7 +18,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 //Adding DI 
 builder.Services.AddScoped<ICustomer,CustomerService>();
 builder.Services.AddScoped<IServices, ServiceService>();
-builder.Services.AddScoped<ICustomerService, CustomerServiceService>();
+builder.Services.AddScoped<ICustomerHandler, CustomerHandlerService>();
 
 var app = builder.Build();
 

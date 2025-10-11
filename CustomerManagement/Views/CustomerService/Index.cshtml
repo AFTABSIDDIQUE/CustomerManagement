@@ -1,6 +1,8 @@
 ﻿@using CustomerManagement.DTO.CustomerService
 @model CustomerServicePageModel
-
+@{
+    Layout = "_Layout";
+}
 <h2>@(ViewBag.CustomerInfo.Name ?? "Customer") Service List</h2>
 
 <!-- Container Div with border -->
@@ -41,53 +43,57 @@
 
     <!-- Action Buttons -->
     <div class="mt-3">
-        <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#UpdateCustomerModal">
+        <button type="button" class="btn btn-warning mr-2" data-toggle="modal" data-target="#UpdateCustomerModal">
             Update Customer Details
         </button>
 
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
+
+        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#addCustomerModal">
             Add Service
         </button>
+
     </div>
 </div>
 
 
-<!--  Add Service Modal -->
-<div class="modal fade" id="addCustomerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<!-- Add Service Modal -->
+<div class="modal fade" id="addCustomerModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form asp-action="CreateCustomer" method="post">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="addCustomerModalLabel">Add New Customer</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="addCustomerModalLabel">Add New Customer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label asp-for="NewService.CustomerId" class="form-label">Customer Name</label>
+                    <div class="form-group">
+                        <label asp-for="NewService.CustomerId" class="font-weight-bold">Customer Name</label>
                         <!-- Hidden input for CustomerId -->
                         <input asp-for="NewService.CustomerId" type="hidden" value="@ViewBag.CustomerInfo.Id" />
-                        <input class="form-control"
-                               value="@(ViewBag.CustomerInfo.Name ?? "")"
-                               readonly />
+                        <input class="form-control" value="@(ViewBag.CustomerInfo.Name ?? "")" readonly />
                         <span asp-validation-for="NewService.CustomerId" class="text-danger"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <label asp-for="NewService.ServiceId" class="form-label">Service</label>
-                        <select asp-for="NewService.ServiceId" class="form-select" asp-items="ViewBag.ServiceList">
+                    <div class="form-group">
+                        <label asp-for="NewService.ServiceId" class="font-weight-bold">Service</label>
+                        <select asp-for="NewService.ServiceId" class="form-control" asp-items="ViewBag.ServiceList">
                             <option value="">-- Select a service --</option>
                         </select>
                         <span asp-validation-for="NewService.ServiceId" class="text-danger"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <label asp-for="NewService.CustomerPrice" class="form-label">Price</label>
+                    <div class="form-group">
+                        <label asp-for="NewService.CustomerPrice" class="font-weight-bold">Price</label>
                         <input asp-for="NewService.CustomerPrice" class="form-control" placeholder="₹ Enter amount" />
                         <span asp-validation-for="NewService.CustomerPrice" class="text-danger"></span>
                     </div>
                 </div>
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </div>
             </form>
@@ -95,14 +101,16 @@
     </div>
 </div>
 
-<!-- Update Service Modal -->
-<div class="modal fade" id="UpdateServiceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<!-- Update Service Modal (Bootstrap 4) -->
+<div class="modal fade" id="UpdateServiceModal" tabindex="-1" role="dialog" aria-labelledby="UpdateServiceModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form id="updateServiceForm" method="post" asp-action="UpdateService">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="addCustomerModalLabel">Update Customer</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="UpdateServiceModalLabel">Update Customer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
 
@@ -110,21 +118,21 @@
                     <input type="hidden" asp-for="UpdateService.CustomerId" id="CustomerId" name="UpdateService.CustomerId" />
 
                     <!-- Customer Name -->
-                    <div class="mb-3">
-                        <label class="form-label" asp-for="UpdateService.CustomerName">Customer Name</label>
+                    <div class="form-group">
+                        <label asp-for="UpdateService.CustomerName">Customer Name</label>
                         <input type="text" id="CustomerName" asp-for="UpdateService.CustomerName" class="form-control" readonly />
                     </div>
 
                     <input type="hidden" asp-for="UpdateService.ServiceId" id="ServiceId" name="UpdateService.ServiceId" />
                     <!-- Service Name -->
-                    <div class="mb-3">
-                        <label class="form-label" asp-for="UpdateService.ServiceName">Service Name</label>
+                    <div class="form-group">
+                        <label asp-for="UpdateService.ServiceName">Service Name</label>
                         <input type="text" id="ServiceName" asp-for="UpdateService.ServiceName" class="form-control" readonly />
                     </div>
 
                     <!-- Customer Price -->
-                    <div class="mb-3">
-                        <label class="form-label" asp-for="UpdateService.CustomerPrice">Price</label>
+                    <div class="form-group">
+                        <label asp-for="UpdateService.CustomerPrice">Price</label>
                         <input type="text" asp-for="UpdateService.CustomerPrice" id="CustomerPrice" name="UpdateService.CustomerPrice" class="form-control" placeholder="₹ Enter amount" />
                     </div>
 
@@ -133,7 +141,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>
@@ -142,55 +150,57 @@
 </div>
 
 <!-- Update Customer Modal -->
-<div class="modal fade" id="UpdateCustomerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateCustomerModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="UpdateCustomerModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="updateCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form id="updateCustomerForm" method="post" asp-action="UpdateCustomerInfo">
                 <div class="modal-header">
                     <h5 class="modal-title" id="updateCustomerModalLabel">Update Customer Information</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
 
                 <div class="modal-body">
                     <div class="row">
                         <!-- Left Column -->
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label asp-for="UpdateCustomer.CustomerName" class="form-label fw-bold">Customer Name</label>
-                                <input asp-for="UpdateCustomer.CustomerName"  type="text" class="form-control" id="CustomerName" value="@ViewBag.CustomerInfo?.Name" required />
+                            <div class="form-group">
+                                <label asp-for="UpdateCustomer.CustomerName" class="font-weight-bold">Customer Name</label>
+                                <input asp-for="UpdateCustomer.CustomerName" type="text" class="form-control" id="CustomerName" value="@ViewBag.CustomerInfo?.Name" required />
                             </div>
 
-                            <div class="mb-3">
-                                <label asp-for="UpdateCustomer.MobileNumber"  class="form-label fw-bold">Mobile Number</label>
-                                <input asp-for="UpdateCustomer.MobileNumber"  type="text" class="form-control" id="CustomerPhone" value="@ViewBag.CustomerInfo?.Phone" />
+                            <div class="form-group">
+                                <label asp-for="UpdateCustomer.MobileNumber" class="font-weight-bold">Mobile Number</label>
+                                <input asp-for="UpdateCustomer.MobileNumber" type="text" class="form-control" id="CustomerPhone" value="@ViewBag.CustomerInfo?.Phone" />
                             </div>
 
-                            <div class="mb-3">
-                                <label asp-for="UpdateCustomer.Email"  class="form-label fw-bold">Email</label>
-                                <input asp-for="UpdateCustomer.Email"  type="email" class="form-control" id="CustomerEmail" value="@ViewBag.CustomerInfo?.Email" />
+                            <div class="form-group">
+                                <label asp-for="UpdateCustomer.Email" class="font-weight-bold">Email</label>
+                                <input asp-for="UpdateCustomer.Email" type="email" class="form-control" id="CustomerEmail" value="@ViewBag.CustomerInfo?.Email" />
                             </div>
                         </div>
 
                         <!-- Right Column -->
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label asp-for="UpdateCustomer.WhatsAppNumber"  class="form-label fw-bold">WhatsApp Number</label>
-                                <input asp-for="UpdateCustomer.WhatsAppNumber"  type="text" class="form-control" id="CustomerWhatsApp" value="@ViewBag.CustomerInfo?.WhatsApp" />
+                            <div class="form-group">
+                                <label asp-for="UpdateCustomer.WhatsAppNumber" class="font-weight-bold">WhatsApp Number</label>
+                                <input asp-for="UpdateCustomer.WhatsAppNumber" type="text" class="form-control" id="CustomerWhatsApp" value="@ViewBag.CustomerInfo?.WhatsApp" />
                             </div>
 
-                            <div class="mb-3">
-                                <label asp-for="UpdateCustomer.Reference"  class="form-label fw-bold">Reference</label>
+                            <div class="form-group">
+                                <label asp-for="UpdateCustomer.Reference" class="font-weight-bold">Reference</label>
                                 <input asp-for="UpdateCustomer.Reference" type="text" class="form-control" id="CustomerReference" value="@ViewBag.CustomerInfo?.Reference" />
                             </div>
                         </div>
                     </div>
 
                     <!-- Hidden Customer ID -->
-                    <input asp-for="UpdateCustomer.CustomerId"  type="hidden" id="CustomerId" value="@ViewBag.CustomerInfo?.Id" />
+                    <input asp-for="UpdateCustomer.CustomerId" type="hidden" id="CustomerId" value="@ViewBag.CustomerInfo?.Id" />
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                 </div>
             </form>
@@ -199,73 +209,111 @@
 </div>
 
 
-<!--  Add Service Table -->
-<table class="table mt-4" id="example">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Service</th>
-            <th>Customer Price</th>
-            <th>Minimum Price</th>
-            <th>Updated Date</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody id="mydata">
-        @if (Model != null && Model.Services.Any())
-        {
-            foreach (var cus in Model.Services)
+<!-- ✅ Customer Services Table -->
+<div class="table-responsive mt-4">
+    <table class="table table-bordered" id="customerServicesTable" width="100%" cellspacing="0">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Customer Name</th>
+                <th>Service</th>
+                <th>Customer Price</th>
+                <th>Minimum Price</th>
+                <th>Updated Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tfoot class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Customer Name</th>
+                <th>Service</th>
+                <th>Customer Price</th>
+                <th>Minimum Price</th>
+                <th>Updated Date</th>
+                <th>Action</th>
+            </tr>
+        </tfoot>
+        @* <tbody>
+            @if (Model?.Services != null && Model.Services.Any())
             {
-                <tr>
-                    <td>@cus.CustomerServicesId</td>
-                    <td>@cus.CustomerName</td>
-                    <td>@cus.ServiceName</td>
-                    <td>@cus.CustomerPrice</td>
-                    <td>@cus.MinimumPriceList</td>
-                    <td>@cus.UpdatedAt</td>
-                    <td>
-                        <a>
+                foreach (var cus in Model.Services)
+                {
+                    <tr>
+                        <td>@cus.CustomerServicesId</td>
+                        <td>@cus.CustomerName</td>
+                        <td>@cus.ServiceName</td>
+                        <td>@cus.CustomerPrice</td>
+                        <td>@cus.MinimumPriceList</td>
+                        <td>@(cus.UpdatedAt)</td>
+                        <td>
                             <button type="button"
-                                    class="btn btn-warning updateServiceBtn"
+                                    class="btn btn-warning btn-sm updateServiceBtn"
                                     data-id="@cus.CustomerServicesId"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#UpdateServiceModal">
+                                    data-toggle="modal"
+                                    data-target="#UpdateServiceModal">
                                 Update Service
                             </button>
-                        </a>
-                    </td>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center">No records found.</td>
                 </tr>
             }
-        }
-        @* else
-        {
-            <tr>
-                <td colspan="5">No records found.</td>
-            </tr>
-        } *@
+        </tbody> *@
 
-    </tbody>
-</table>
+        <tbody>
+            @if (Model?.Services != null && Model.Services.Any())
+            {
+                foreach (var cus in Model.Services)
+                {
+                    <tr>
+                        <td>@cus.CustomerServicesId</td>
+                        <td>@cus.CustomerName</td>
+                        <td>@cus.ServiceName</td>
+                        <td>@cus.CustomerPrice</td>
+                        <td>@cus.MinimumPriceList</td>
+                        <td>@(cus.UpdatedAt ?? cus.CreatedAt)</td>
+                        <td>
+                            <button type="button"
+                                    class="btn btn-warning btn-sm updateServiceBtn"
+                                    data-id="@cus.CustomerServicesId"
+                                    data-toggle="modal"
+                                    data-target="#UpdateServiceModal">
+                                Update Service
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+
+
+    </table>
+</div>
 
 @section Scripts
 {
-    <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet" />
-
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
-
     <script>
         $(document).ready(function () {
             // Initialize DataTables
-            var table = $('#example').DataTable({
+            var table = $('#customerServicesTable').DataTable({
+                paging: true,        // Enable pagination
+                searching: true,     // Enable search box
+                ordering: true,      // Enable column sorting
+                info: true,          // Show info text
+                lengthChange: true,   // Allow changing rows per page
                 language: {
-                    emptyTable: "No services found for this customer."
-                }
+                            emptyTable: "No customer services available." //message when table is empty
+                           }
             });
 
             // Handle Update Button Click (delegated binding for dynamic rows)
-            $('#example').on('click', '.updateServiceBtn', function () {
+            $('#customerServicesTable').on('click', '.updateServiceBtn', function () {
                 var id = $(this).data('id'); // Get the customer service ID
 
                 $.ajax({

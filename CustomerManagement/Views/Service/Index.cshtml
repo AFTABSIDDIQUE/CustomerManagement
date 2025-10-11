@@ -4,35 +4,41 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <div class="d-flex align-items-center">
         <span class="me-3 fw-semibold">Service's' Details:</span>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCustomerModal">
             Add Services
         </button>
+
     </div>
     <div id="dataTables_filter_container"></div> <!-- Search box will be moved here -->
 </div>
 
 
 <!-- ✅ Add Customer Modal -->
-<div class="modal fade" id="addCustomerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="addCustomerModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form asp-action="CreateService" method="post">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="addCustomerModalLabel">Add New Services</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="addCustomerModalLabel">Add New Services</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label asp-for="CreateService.ServiceName" class="form-label">Service Name</label>
+                    <div class="form-group">
+                        <label asp-for="CreateService.ServiceName" class="font-weight-bold">Service Name</label>
                         <input asp-for="CreateService.ServiceName" class="form-control" placeholder="Enter customer name" />
                     </div>
-                    <div class="mb-3">
-                        <label asp-for="CreateService.MinimumPriceList" class="form-label">Minimum Price</label>
+
+                    <div class="form-group">
+                        <label asp-for="CreateService.MinimumPriceList" class="font-weight-bold">Minimum Price</label>
                         <input asp-for="CreateService.MinimumPriceList" class="form-control" placeholder="₹ Enter Amount" />
                     </div>
                 </div>
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </div>
             </form>
@@ -41,29 +47,34 @@
 </div>
 
 <!-- ✅ Update Service Modal -->
-<div class="modal fade" id="updateCustomerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="updateCustomerModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="updateCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form  method="post" asp-action="UpdateService">
+            <form method="post" asp-action="UpdateService">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="addCustomerModalLabel">Update Services</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="updateCustomerModalLabel">Update Services</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+
                 <div class="modal-body">
-                    <div class="mb-3">
+                    <div class="form-group">
                         <input type="hidden" asp-for="UpdateService.ServiceId" id="ServiceId" name="UpdateService.ServiceId" />
 
-                        <label asp-for="UpdateService.ServiceName" class="form-label">Service Name</label>
-                        <input asp-for="UpdateService.ServiceName" id="ServiceName"  class="form-control" placeholder="Enter customer name" />
+                        <label asp-for="UpdateService.ServiceName" class="font-weight-bold">Service Name</label>
+                        <input asp-for="UpdateService.ServiceName" id="ServiceName" class="form-control" placeholder="Enter customer name" />
                     </div>
-                    <div class="mb-3">
-                        <label asp-for="UpdateService.MinimumPriceList" class="form-label">Minimum Price</label>
+
+                    <div class="form-group">
+                        <label asp-for="UpdateService.MinimumPriceList" class="font-weight-bold">Minimum Price</label>
                         <input asp-for="UpdateService.MinimumPriceList" id="MinimumPriceList" class="form-control" placeholder="₹ Enter Amount" />
                     </div>
                 </div>
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>
         </div>
@@ -72,18 +83,27 @@
 
 
 <!-- ✅ Customer Table -->
-<table class="table mt-4" id="example">
-    <thead>
-        <tr>
-            <th>Service Id</th>
-            <th>Service Name</th>
-            <th>Minimum Price</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null && Model.FetchServices.Any())
-        {
+<div class="table-responsive mt-4">
+    <table class="table table-bordered" id="servicesTable" width="100%" cellspacing="0">
+        <thead class="table-light">
+            <tr>
+                <th>Service Id</th>
+                <th>Service Name</th>
+                <th>Minimum Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tfoot class="table-light">
+            <tr>
+                <th>Service Id</th>
+                <th>Service Name</th>
+                <th>Minimum Price</th>
+                <th>Action</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            @if (Model != null && Model.FetchServices.Any())
+            {
                 @foreach (var cus in Model.FetchServices)
                 {
                     <tr>
@@ -91,34 +111,48 @@
                         <td>@cus.ServiceName</td>
                         <td>@cus.MinimumPriceList</td>
                         <td>
-                            <a asp-controller="" asp-action="" asp-route-id="@cus.ServiceId" class="btn btn-warning btn-sm updateServiceBtn" data-bs-toggle="modal" data-id="@cus.ServiceId" data-bs-target="#updateCustomerModal">
+                            <button type="button"
+                                    class="btn btn-warning btn-sm updateServiceBtn"
+                                    data-id="@cus.ServiceId"
+                                    data-toggle="modal"
+                                    data-target="#updateCustomerModal">
                                 Update
-                            </a>
+                            </button>
+
                         </td>
                     </tr>
                 }
-        }
-    </tbody>
-</table>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center">No records found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
 
 @section Scripts
 {
-    <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet" />
-
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
 
     <script>
         $(document).ready(function () {
-            var table = $('#example').DataTable({
-                // dom: '<"top"f>rt<"bottom"lip><"clear">' Search bar top-left, rest default
+            var table = $('#servicesTable').DataTable({
+                                paging: true,        // Enable pagination
+                                searching: true,     // Enable search box
+                                ordering: true,      // Enable column sorting
+                                info: true,          // Show info text
+                                lengthChange: true   // Allow changing rows per page
+
+            
             });
 
-            // Move the default DataTables search box into the custom container
-            // $('#example_filter').appendTo('#dataTables_filter_container');
-
              // Handle Update Button Click (delegated binding for dynamic rows)
-            $('#example').on('click', '.updateServiceBtn', function () {
+            $('#servicesTable').on('click', '.updateServiceBtn', function () {
                 var id = $(this).data('id'); // Get the customer service ID
 
                 $.ajax({
