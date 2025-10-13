@@ -38,6 +38,10 @@
                 <strong class="me-2">Reference:</strong>
                 <span>@(ViewBag.CustomerInfo.Reference ?? "N/A")</span>
             </div>
+            <div class="mb-3 d-flex">
+                <strong class="me-2">LastVisited:</strong>
+                <span>@(ViewBag.CustomerInfo.LastVisited ?? "N/A")</span>
+            </div>
         </div>
     </div>
 
@@ -51,6 +55,12 @@
         <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#addCustomerModal">
             Add Service
         </button>
+
+
+        <button type="button" class="btn btn-success CheckIn mr-2" data-id="@ViewBag.CustomerInfo.Id" id="CheckInBtn">
+                Check In
+        </button>
+
 
     </div>
 </div>
@@ -234,37 +244,6 @@
                 <th>Action</th>
             </tr>
         </tfoot>
-        @* <tbody>
-            @if (Model?.Services != null && Model.Services.Any())
-            {
-                foreach (var cus in Model.Services)
-                {
-                    <tr>
-                        <td>@cus.CustomerServicesId</td>
-                        <td>@cus.CustomerName</td>
-                        <td>@cus.ServiceName</td>
-                        <td>@cus.CustomerPrice</td>
-                        <td>@cus.MinimumPriceList</td>
-                        <td>@(cus.UpdatedAt)</td>
-                        <td>
-                            <button type="button"
-                                    class="btn btn-warning btn-sm updateServiceBtn"
-                                    data-id="@cus.CustomerServicesId"
-                                    data-toggle="modal"
-                                    data-target="#UpdateServiceModal">
-                                Update Service
-                            </button>
-                        </td>
-                    </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="7" class="text-center">No records found.</td>
-                </tr>
-            }
-        </tbody> *@
 
         <tbody>
             @if (Model?.Services != null && Model.Services.Any())
@@ -300,6 +279,8 @@
 {
     <script>
         $(document).ready(function () {
+
+
             // Initialize DataTables
             var table = $('#customerServicesTable').DataTable({
                 paging: true,        // Enable pagination
@@ -333,8 +314,34 @@
                     }
                 });
             });
+
+        $('#CheckInBtn').on('click', function () {
+            var customerId = $(this).data('id');
+
+            $.ajax({
+                url: '/CustomerService/CheckInCustomer',  // must match your controller route
+                type: 'POST',
+                data: { customerId: customerId },
+                success: function (response) {
+                    console.log('Response:', response); // ✅ Debug check
+                    if (response.success) {
+                        toastr.success(response.message);
+                        setTimeout(function () {
+                            location.reload();  // ✅ Refresh after success
+                        }, 1500);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX error:', error);
+                    toastr.error('Error checking in customer.');
+                }
+            });
+        });
+
+
+
         });
     </script>
-
-    <partial name="_ValidationScriptsPartial" />
 }

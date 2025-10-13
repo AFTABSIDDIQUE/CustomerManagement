@@ -28,7 +28,8 @@ namespace CustomerManagement.Controllers
                 Phone = name.MobileNumber,
                 WhatsApp = name.WhatsAppNumber,
                 Email = name.Email,
-                Reference = name.Reference
+                Reference = name.Reference,
+                LastVisited = name.CheckIn
 
 
             };
@@ -106,6 +107,17 @@ namespace CustomerManagement.Controllers
             return RedirectToAction("Index", new { id = data.CustomerId });
         }
 
+        [HttpPost]
+        public IActionResult CheckInCustomer(int customerId)
+        {
+            if (customerId > 0)
+            {
+                customerService.CheckInCustomer(customerId);
+                return Json(new { success = true, message = "Customer checked in successfully!" });
+            }
+
+            return Json(new { success = false, message = "Invalid Customer ID!" });
+        }
 
     }
 }

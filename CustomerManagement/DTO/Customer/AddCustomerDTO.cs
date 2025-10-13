@@ -8,5 +8,6 @@
         public string Reference { get; set; }
         public string Email { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime CheckIn { get; set; }
     }
 }

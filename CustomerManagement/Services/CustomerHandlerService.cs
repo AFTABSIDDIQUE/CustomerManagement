@@ -26,6 +26,16 @@ namespace CustomerManagement.Services
             db.SaveChanges();
         }
 
+        public void CheckInCustomer(int id)
+        {
+            var data = db.Customer.FirstOrDefault(c => c.CustomerId == id);
+            if (data != null)
+            {
+                data.CheckIn = DateTime.Now;
+                db.SaveChanges();
+            }
+        }
+
         public CustomersServices FetchCustomerService(int id)
         {
             var data =  db.Customer.FirstOrDefault(c => c.CustomerId == id);

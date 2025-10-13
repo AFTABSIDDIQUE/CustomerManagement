@@ -14,5 +14,6 @@ namespace CustomerManagement.Repository
         UpdateCustomerServiceDTO GetCustomerServices(int id);
         public void UpdateCustomerService(UpdateCustomerServiceDTO data);
         public void UpdateCustomerDetails(UpdateCustomerDTO data);
+        public void CheckInCustomer(int id);
     }
 }
