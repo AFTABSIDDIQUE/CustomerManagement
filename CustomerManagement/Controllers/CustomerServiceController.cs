@@ -1,11 +1,13 @@
 ﻿using CustomerManagement.Models;
 using CustomerManagement.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
 namespace CustomerManagement.Controllers
 {
+    [Authorize]
     public class CustomerServiceController : Controller
     {
         private ICustomerHandler customerService;

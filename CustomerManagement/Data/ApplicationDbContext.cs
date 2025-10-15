@@ -9,6 +9,7 @@ namespace CustomerManagement.Data
         public DbSet<CustomersServices>Customer { get; set; }
         public DbSet<Service>Service { get; set; }
         public DbSet<CustomerServices> CustomerService { get; set; }
+        public DbSet<Accounts> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

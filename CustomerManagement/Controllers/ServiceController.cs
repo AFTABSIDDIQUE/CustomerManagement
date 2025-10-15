@@ -3,10 +3,12 @@ using CustomerManagement.DTO.Services;
 using CustomerManagement.Models;
 using CustomerManagement.Repository;
 using CustomerManagement.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerManagement.Controllers
 {
+    [Authorize]
     public class ServiceController : Controller
     {
         private IServices services;

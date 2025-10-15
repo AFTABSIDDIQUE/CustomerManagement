@@ -1,10 +1,12 @@
 ﻿using CustomerManagement.DTO.Customer;
 using CustomerManagement.Models;
 using CustomerManagement.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerManagement.Controllers
 {
+    [Authorize]
     public class CustomerController : Controller
     {
         private ICustomer customerService;

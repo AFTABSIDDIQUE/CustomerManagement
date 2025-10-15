@@ -15,58 +15,66 @@
 </div>
 
 
-<!-- ✅ Add Customer Modal (Two-column layout) -->
-<div class="modal fade" id="addCustomerModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+<!-- ✅ Add Customer Modal (Two-row, two-column layout) -->
+<div class="modal fade" id="addCustomerModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form asp-action="CreateCustomer" method="post">
-                <div class="modal-header">
+                <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="addCustomerModalLabel">Add New Customer</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
-                <div class="modal-body">
+                <div class="modal-body px-4">
+                    <!-- ✅ Row 1 -->
                     <div class="row">
-                        <!-- Left Column -->
                         <div class="col-md-6">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label asp-for="NewCustomer.CustomerName" class="font-weight-bold">Customer Name</label>
                                 <input asp-for="NewCustomer.CustomerName" class="form-control" placeholder="Enter customer name" />
                                 <span asp-validation-for="NewCustomer.CustomerName" class="text-danger"></span>
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <!-- Checkbox to copy Mobile Number -->
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="NewCustomer.MobileNumber" class="font-weight-bold">Mobile Number</label>
+                                <input asp-for="NewCustomer.MobileNumber" maxlength="10" pattern="\d{10}" class="form-control" id="MobileNumber" placeholder="9988774455" />
+                                <span asp-validation-for="NewCustomer.MobileNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ✅ Row 2 -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
                                 <div class="form-check mb-2">
                                     <input type="checkbox" class="form-check-input" id="copyMobileToWhatsapp" />
-                                    <label class="form-check-label" for="copyMobileToWhatsapp">
-                                        Use Mobile Number as WhatsApp
-                                    </label>
+                                    <label class="form-check-label" for="copyMobileToWhatsapp">Use Mobile Number as WhatsApp</label>
                                 </div>
-
                                 <label asp-for="NewCustomer.WhatsAppNumber" class="font-weight-bold">WhatsApp Number</label>
-                                <input asp-for="NewCustomer.WhatsAppNumber" maxlength="10" pattern="\d{10}"  class="form-control" id="WhatsAppNumber" placeholder="9988774455" />
+                                <input asp-for="NewCustomer.WhatsAppNumber" maxlength="10" pattern="\d{10}" class="form-control" id="WhatsAppNumber" placeholder="9988774455" />
                                 <span asp-validation-for="NewCustomer.WhatsAppNumber" class="text-danger"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label asp-for="NewCustomer.Email" class="font-weight-bold">Email</label>
-                                <input asp-for="NewCustomer.Email" class="form-control" placeholder="example@gmail.com" />
-                                <span asp-validation-for="NewCustomer.Email" class="text-danger"></span>
                             </div>
                         </div>
 
-                        <!-- Right Column -->
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="NewCustomer.MobileNumber" class="font-weight-bold">Mobile Number</label>
-                                <input asp-for="NewCustomer.MobileNumber" maxlength="10" pattern="\d{10}"  class="form-control" id="MobileNumber" placeholder="9988774455" />
-                                <span asp-validation-for="NewCustomer.MobileNumber" class="text-danger"></span>
+                            <div class="form-group mb-3">
+                                <label asp-for="NewCustomer.Email" class="font-weight-bold">Email</label>
+                                <input asp-for="NewCustomer.Email" type="email" class="form-control" placeholder="example@gmail.com" />
+                                <span asp-validation-for="NewCustomer.Email" class="text-danger"></span>
                             </div>
+                        </div>
+                    </div>
 
-                            <div class="form-group">
+                    <!-- ✅ Row 3 -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group mb-3">
                                 <label asp-for="NewCustomer.Reference" class="font-weight-bold">Reference</label>
                                 <input asp-for="NewCustomer.Reference" class="form-control" placeholder="Place/Short Name" />
                                 <span asp-validation-for="NewCustomer.Reference" class="text-danger"></span>
@@ -83,7 +91,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- ✅ Customer Table -->
 <div class="table-responsive mt-4">

@@ -1,21 +1,30 @@
 using System.Diagnostics;
 using CustomerManagement.Models;
+using CustomerManagement.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerManagement.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IDashboard dashboardData;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,IDashboard dashboardData)
         {
             _logger = logger;
+            this.dashboardData = dashboardData;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(DashboardData data)
         {
-            return View();
+            int customerCount = dashboardData.GetCustomerCount();   
+            int serviceCount = dashboardData.GetServiceCount();
+            data.CustomerCount = customerCount;
+            data.ServiceCount = serviceCount;
+            return View(data);
         }
 
         public IActionResult Privacy()
@@ -28,5 +37,14 @@ namespace CustomerManagement.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("JWTToken");
+
+            return RedirectToAction("Index", "Account");
+        }
     }
+
 }
