@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerManagement.Controllers
 {
-    [Authorize]
+
     public class CustomerController : Controller
     {
         private ICustomer customerService;
@@ -32,8 +32,8 @@ namespace CustomerManagement.Controllers
 
             if (data!=null)
             {
-                data.CreatedAt = DateTime.Now;
-                data.CheckIn = DateTime.Now;
+                data.CreatedAt = DateTime.UtcNow;
+                data.CheckIn = DateTime.UtcNow;
                 customerService.AddCustomer(data);
                 TempData["Success"] = "Customer Added successfully!";
                 return RedirectToAction("Index");

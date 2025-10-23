@@ -1,9 +1,11 @@
 ﻿using CustomerManagement.DTO.Account;
 using CustomerManagement.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerManagement.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly ILogin _authService;
@@ -11,12 +13,14 @@ namespace CustomerManagement.Controllers
         {
             _authService = authService;
         }
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(UserData data)
         {
             var token = await _authService.LoginAsync(data);

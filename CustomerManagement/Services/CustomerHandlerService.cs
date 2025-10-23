@@ -31,7 +31,7 @@ namespace CustomerManagement.Services
             var data = db.Customer.FirstOrDefault(c => c.CustomerId == id);
             if (data != null)
             {
-                data.CheckIn = DateTime.Now;
+                data.CheckIn = DateTime.UtcNow;
                 db.SaveChanges();
             }
         }
@@ -77,7 +77,7 @@ namespace CustomerManagement.Services
                 existingData.WhatsAppNumber = data.WhatsAppNumber;
                 existingData.Reference = data.Reference;
                 existingData.Email = data.Email;
-                existingData.UpdatedAt = DateTime.Now;
+                existingData.UpdatedAt = DateTime.UtcNow;
                 db.SaveChanges();
             }
          }
@@ -88,7 +88,7 @@ namespace CustomerManagement.Services
             if (existingData != null)
             {
                 existingData.CustomerPrice = data.CustomerPrice;
-                existingData.UpdatedAt = DateTime.Now;
+                existingData.UpdatedAt = DateTime.UtcNow;
                 db.SaveChanges();
             }
         }

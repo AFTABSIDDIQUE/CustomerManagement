@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace CustomerManagement.Controllers
 {
-    [Authorize]
+
     public class CustomerServiceController : Controller
     {
         private ICustomerHandler customerService;
@@ -66,7 +66,7 @@ namespace CustomerManagement.Controllers
             var data = model.NewService;
             if (data != null) 
             {
-                data.CreatedAt = DateTime.Now;
+                data.CreatedAt = DateTime.UtcNow;
                 customerService.AddCustomerService(data);
                 TempData["Success"] = "Customer Services Added successfully!";
                 return RedirectToAction("Index", new { id = data.CustomerId });
@@ -101,7 +101,7 @@ namespace CustomerManagement.Controllers
             var data = model.UpdateCustomer;
             if (data != null)
             {
-                data.UpdatedAt = DateTime.Now;
+                //data.UpdatedAt = DateTime.Now;
                 customerService.UpdateCustomerDetails(data);
                 TempData["Success"] = "Customer Info Updated successfully!";
                 

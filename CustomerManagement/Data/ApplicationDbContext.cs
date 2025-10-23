@@ -10,6 +10,7 @@ namespace CustomerManagement.Data
         public DbSet<Service>Service { get; set; }
         public DbSet<CustomerServices> CustomerService { get; set; }
         public DbSet<Accounts> Users { get; set; }
+        public DbSet<Stock> Stocks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -46,7 +46,7 @@ namespace CustomerManagement.Services
                 // Update the fields based on the DTO
                 existingService.ServiceName = data.ServiceName;
                 existingService.MinimumPriceList = data.MinimumPriceList;
-                existingService.UpdatedAt = DateTime.Now; // Optional: for audit tracking
+                existingService.UpdatedAt = DateTime.UtcNow; // Optional: for audit tracking
 
                 // Save changes to the database
                 db.SaveChanges();

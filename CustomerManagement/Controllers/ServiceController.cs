@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerManagement.Controllers
 {
-    [Authorize]
+
     public class ServiceController : Controller
     {
         private IServices services;
@@ -32,7 +32,7 @@ namespace CustomerManagement.Controllers
             var data = model.CreateService;
             if (data!=null)
             {
-                data.CreatedAt = DateTime.Now;
+                data.CreatedAt = DateTime.UtcNow;
                 services.AddService(data);
                 TempData["Success"] = "Service Added successfully!";
                 return RedirectToAction("Index");
@@ -54,7 +54,7 @@ namespace CustomerManagement.Controllers
             var data = model.UpdateService;
             if (data != null)
             {
-                data.Updated = DateTime.Now;
+                data.Updated = DateTime.UtcNow;
                 services.UpdateService(data);
                 TempData["Success"] = "Service Updated successfully!";
                 return RedirectToAction("Index");
